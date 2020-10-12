@@ -29,6 +29,7 @@ app.post('/sendData', (req, res)=>{
 
 
 
-app.get('/', (req, res)=> {
-    res.render('index.ejs')
+app.get('/getData', (req, res)=> {
+    const data = db.collection('dataAutomation').find().limit( 10 )
+    console.log(data)
 })
