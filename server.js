@@ -2,7 +2,7 @@ const express = require('express')
 const MongoClient = require('mongodb').MongoClient
 const bodyParser = require('body-parser')
 const app = express()
-const uri = "mongodb+srv://tcc:bolinha123@cluster0.rpwsc.gcp.mongodb.net/bugfinderDev?retryWrites=true&w=majority"
+const uri = "mongodb+srv://tcc:bolinha123@bugfinder.2kunu.mongodb.net/bugfinderDev?retryWrites=true&w=majority"
 let db
 app.use(bodyParser.json())
 
@@ -11,7 +11,7 @@ MongoClient.connect(uri, (err, client) => {
 
     db = client.db('bugfinderDev')
 
-    app.listen(3000, function (){
+    app.listen(3000, function(){
         console.log('server running on port 3000')
     })
 })
@@ -27,9 +27,19 @@ app.post('/sendData', (req, res)=>{
     })
 })
 
+function iterateFunc(doc) {
+    console.log(JSON.stringify(doc, null, 4));
+}
 
+function errorFunc(error) {
+    console.log(error);
+}
 
 app.get('/getData', (req, res)=> {
-    const data = db.collection('dataAutomation').find().limit( 10 )
-    console.log(data)
+    db.collection('dataAutomation').createIndex( { featureName: "text" } )
+    const data = db.collection('dataAutomation').find({ $text: { $search: req.query.feature } }).toArray((err, results) => {
+        if (err) return console.log(err)
+        console.log(results);
+        res.send(results);
+    });
 })

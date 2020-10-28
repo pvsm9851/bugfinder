@@ -1,11 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="f50e6930-89b7-4d1e-993a-d8edd9c60d5a" name="Default Changelist" comment="" />
+    <list default="true" id="f50e6930-89b7-4d1e-993a-d8edd9c60d5a" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server.js" beforeDir="false" afterPath="$PROJECT_DIR$/server.js" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="ProjectId" id="1imkSoLhoNMt9VX3CSD1OLe7bib" />
   <component name="ProjectViewState">
@@ -15,7 +21,7 @@
   <component name="PropertiesComponent">
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../sodexo-dashboards" />
     <property name="nodejs_package_manager_path" value="npm" />
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
@@ -27,11 +33,23 @@
       <option name="presentableId" value="Default" />
       <updated>1602520157214</updated>
       <workItem from="1602520158306" duration="8061000" />
-      <workItem from="1602531408283" duration="1692000" />
+      <workItem from="1602531408283" duration="1849000" />
+      <workItem from="1602554338728" duration="17000" />
+      <workItem from="1603675547603" duration="1673000" />
+      <workItem from="1603721130890" duration="8000" />
+      <workItem from="1603753730489" duration="2526000" />
+      <workItem from="1603770520934" duration="65000" />
+      <workItem from="1603841013785" duration="5931000" />
     </task>
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="WindowStateProjectService">
+    <state x="740" y="275" key="FileChooserDialogImpl" timestamp="1603846334162">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="740" y="275" key="FileChooserDialogImpl/0.0.1920.1040@0.0.1920.1040" timestamp="1603846334162" />
   </component>
 </project>
