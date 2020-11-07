@@ -21,7 +21,7 @@
   <component name="PropertiesComponent">
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/../sodexo-dashboards" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../nowaste-api" />
     <property name="nodejs_package_manager_path" value="npm" />
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
@@ -39,7 +39,12 @@
       <workItem from="1603721130890" duration="8000" />
       <workItem from="1603753730489" duration="2526000" />
       <workItem from="1603770520934" duration="65000" />
-      <workItem from="1603841013785" duration="5931000" />
+      <workItem from="1603841013785" duration="6586000" />
+      <workItem from="1603920503376" duration="1525000" />
+      <workItem from="1604535454127" duration="3678000" />
+      <workItem from="1604619942573" duration="3364000" />
+      <workItem from="1604706281219" duration="1187000" />
+      <workItem from="1604766475192" duration="3087000" />
     </task>
     <servers />
   </component>
@@ -47,9 +52,9 @@
     <option name="version" value="3" />
   </component>
   <component name="WindowStateProjectService">
-    <state x="740" y="275" key="FileChooserDialogImpl" timestamp="1603846334162">
+    <state x="740" y="275" key="FileChooserDialogImpl" timestamp="1604767932153">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="740" y="275" key="FileChooserDialogImpl/0.0.1920.1040@0.0.1920.1040" timestamp="1603846334162" />
+    <state x="740" y="275" key="FileChooserDialogImpl/0.0.1920.1040@0.0.1920.1040" timestamp="1604767932153" />
   </component>
 </project>

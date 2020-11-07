@@ -36,10 +36,83 @@ function errorFunc(error) {
 }
 
 app.get('/getData', (req, res)=> {
-    db.collection('dataAutomation').createIndex( { featureName: "text" } )
-    const data = db.collection('dataAutomation').find({ $text: { $search: req.query.feature } }).toArray((err, results) => {
+    db.collection('dataAutomation').createIndex( { dateDay: "text" } )
+    const dataBR = new Date(req.query.dateDay * 1000);
+    let otherDate = new Date();
+    dataBR.setHours(otherDate.getHours() - 3);
+    db.collection('dataAutomation').aggregate([
+        {
+            '$project': {
+                'featureName': '$featureName',
+                'scenarioName': '$scenarioName',
+                'status': '$status',
+                'timestamp': {
+                    '$dateFromString': {
+                        'dateString': '$timestamp'
+                    }
+                }
+            }
+        }, {
+            '$match': {
+                'timestamp': {
+                    '$gte': new Date(req.query.dateDay * 1000),
+                    '$lt': new Date(new Date(req.query.dateDay * 1000).getTime() + 60 * 60 * 24 * 1000)
+                }
+            }
+        }, {
+            '$project': {
+                'featureName': '$featureName',
+                'scenarioName': '$scenarioName',
+                'status': '$status',
+                'Hours': {
+                    '$hour': '$timestamp'
+                },
+                'Day': {
+                    '$dayOfMonth': '$timestamp'
+                },
+                'Month': {
+                    '$month': '$timestamp'
+                },
+                'year': {
+                    '$year': '$timestamp'
+                }
+            }
+        }, {
+            '$group': {
+                '_id': {
+                    'featureName': '$featureName',
+                    'scenarioName': '$scenarioName',
+                    'hour': '$Hours'
+                },
+                'total': {
+                    '$sum': 1
+                },
+                'success': {
+                    '$sum': {
+                        '$cond': [
+                            {
+                                '$eq': [
+                                    '$status', 'SUCCESS'
+                                ]
+                            }, 1, 0
+                        ]
+                    }
+                },
+                'failed': {
+                    '$sum': {
+                        '$cond': [
+                            {
+                                '$eq': [
+                                    '$status', 'FAILED'
+                                ]
+                            }, 1, 0
+                        ]
+                    }
+                }
+            }
+        }
+    ]).toArray((err, results) => {
         if (err) return console.log(err)
-        console.log(results);
         res.send(results);
     });
 })
