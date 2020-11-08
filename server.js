@@ -130,6 +130,22 @@ app.get('/getData', (req, res)=> {
                     }
                 }
             }
+        }, {
+            '$group': {
+                '_id': {
+                    'featureName': '$_id.featureName',
+                    'hour': '$_id.hour'
+                },
+                'scenarios': {
+                    '$push': {
+                        'scenarioName': '$_id.scenarioName',
+                        'quantity': '$quantity',
+                        'success': '$success',
+                        'failed': '$failed',
+                        'total': '$total'
+                    }
+                }
+            }
         }
     ]).toArray((err, results) => {
         if (err) return console.log(err)
