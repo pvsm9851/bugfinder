@@ -37,6 +37,7 @@ function errorFunc(error) {
 
 app.get('/getData', (req, res)=> {
     db.collection('dataAutomation').createIndex( { dateDay: "text" } )
+    db.collection('dataAutomation').createIndex( { featureName: "text" } )
     const dataBR = new Date(req.query.dateDay * 1000);
     let otherDate = new Date();
     dataBR.setHours(otherDate.getHours() - 3);
@@ -59,7 +60,13 @@ app.get('/getData', (req, res)=> {
                     '$lt': new Date(new Date(req.query.dateDay * 1000).getTime() + 60 * 60 * 24 * 1000)
                 }
             }
-        }, {
+        },
+        {
+            '$match': {
+                'featureName': req.query.featureName
+            }
+        },
+        {
             '$project': {
                 'featureName': '$featureName',
                 'scenarioName': '$scenarioName',
