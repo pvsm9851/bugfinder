@@ -131,14 +131,17 @@ app.get('/getData', (req, res)=> {
                 }
             }
         }, {
+            '$sort': {
+                '_id.hour': -1
+            }
+            },{
             '$group': {
                 '_id': {
-                    'featureName': '$_id.featureName'
+                    'scenarioName': '$_id.scenarioName'
                 },
-                'scenarios': {
+                'hours': {
                     '$push': {
                         'hour': '$_id.hour',
-                        'scenarioName': '$_id.scenarioName',
                         'quantity': '$quantity',
                         'success': '$success',
                         'failed': '$failed',
@@ -148,7 +151,6 @@ app.get('/getData', (req, res)=> {
             }
         }
     ]).toArray((err, results) => {
-        if (err) return console.log(err)
         res.send(results);
     });
 })
