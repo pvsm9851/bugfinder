@@ -48,6 +48,61 @@ function errorFunc(error) {
     console.log(error);
 }
 
+app.get('/getMaps', (req, res)=> {
+    db.collection('dataAutomation').aggregate(
+        [
+            {
+                '$project': {
+                    'featureName': '$featureName',
+                    'scenarioName': '$scenarioName',
+                    'status': '$status',
+                    'timestamp': {
+                        '$dateFromString': {
+                            'dateString': '$timestamp'
+                        }
+                    }
+                }
+            }, {
+            '$match': {
+                'timestamp': {
+                    '$gte': new Date('Wed, 01 Jan 2014 08:15:39 GMT'),
+                    '$lt': new Date('Wed, 30 Dec 2020 08:15:39 GMT')
+                }
+            }
+        }, {
+            '$project': {
+                'featureName': '$featureName',
+                'scenarioName': '$scenarioName',
+                'status': '$status',
+                'Hours': {
+                    '$hour': '$timestamp'
+                },
+                'Day': {
+                    '$dayOfMonth': '$timestamp'
+                },
+                'Month': {
+                    '$month': '$timestamp'
+                },
+                'year': {
+                    '$year': '$timestamp'
+                }
+            }
+        }, {
+            '$group': {
+                '_id': {
+                    'featureName': '$featureName'
+                },
+                'scenarios': {
+                    '$addToSet': '$scenarioName'
+                }
+            }
+        }
+        ]
+    ).toArray((err, results) => {
+        res.send(results);
+    });
+})
+
 app.get('/getData', (req, res)=> {
     db.collection('dataAutomation').createIndex( { dateDay: "text" } )
     db.collection('dataAutomation').createIndex( { featureName: "text" } )
