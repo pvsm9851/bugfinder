@@ -133,11 +133,11 @@ app.get('/getData', (req, res)=> {
         }, {
             '$group': {
                 '_id': {
-                    'featureName': '$_id.featureName',
-                    'hour': '$_id.hour'
+                    'featureName': '$_id.featureName'
                 },
                 'scenarios': {
                     '$push': {
+                        'hour': '$_id.hour',
                         'scenarioName': '$_id.scenarioName',
                         'quantity': '$quantity',
                         'success': '$success',
