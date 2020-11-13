@@ -187,7 +187,7 @@ app.get('/getData', (req, res)=> {
             }
         }, {
             '$sort': {
-                '_id.hour': -1
+                '_id.hour': 1
             }
             },{
             '$group': {
