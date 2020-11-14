@@ -1,38 +1,40 @@
-const express = require('express')
-const MongoClient = require('mongodb').MongoClient
-const bodyParser = require('body-parser')
-const app = express()
-app.use(function (req, res, next) {
-    // Website you wish to allow to connect
+const express = require('express');
+const http = require('http');
+
+const app = express();
+const bodyParser = require('body-parser');
+app.use(bodyParser.json());
+app.use((req, res, next) => {
     res.setHeader('Access-Control-Allow-Origin', '*');
-    // Request methods you wish to allow
-    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT,    PATCH, DELETE');
-    // Request headers you wish to allow
+    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
     res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
-    // Set to true if you need the website to include cookies in the requests sent
-    // to the API (e.g. in case you use sessions)
     res.setHeader('Access-Control-Allow-Credentials', true);
-    // Pass to next layer of middleware
     next();
 });
-const uri = "mongodb+srv://tcc:bolinha123@bugfinder.2kunu.mongodb.net/bugfinderDev?retryWrites=true&w=majority"
-let db
-app.use(bodyParser.json())
+app.set('view engine', 'ejs');
 
+//Database connection
+const uri = "mongodb+srv://tcc:bolinha123@bugfinder.2kunu.mongodb.net/bugfinderDev?retryWrites=true&w=majority";
+let db;
+const MongoClient = require('mongodb').MongoClient;
 MongoClient.connect(uri, (err, client) => {
-    if (err) return console.log(err)
+    if (err) {
+        console.log(err);
+        return;
+    }
 
-    db = client.db('bugfinderDev')
+    db = client.db('bugfinderDev');
+});
 
-    app.listen(3000, function(){
-        console.log('server running on port 3000')
-    })
-})
+const server = http.createServer(app);
+const hostname = 'localhost';
+const port = 3000;
+server.listen(port, hostname, () => {
+    console.log(`Server running at http://${hostname}:${port}/`);
+});
 
-app.set('view engine', 'ejs')
-
-app.post('/sendData', (req, res)=>{
-    db.collection('dataAutomation').insert(req.body, (err, result)=> {
+app.post('/sendData', (req, res) => {
+    db.collection('dataAutomation').insert(req.body, (err, result) => {
         if (err) return console.log(err)
 
         console.log(req.body)
@@ -40,15 +42,7 @@ app.post('/sendData', (req, res)=>{
     })
 })
 
-function iterateFunc(doc) {
-    console.log(JSON.stringify(doc, null, 4));
-}
-
-function errorFunc(error) {
-    console.log(error);
-}
-
-app.get('/getMaps', (req, res)=> {
+app.get('/getMaps', (req, res) => {
     db.collection('dataAutomation').aggregate(
         [
             {
@@ -63,49 +57,49 @@ app.get('/getMaps', (req, res)=> {
                     }
                 }
             }, {
-            '$match': {
-                'timestamp': {
-                    '$gte': new Date('Wed, 01 Jan 2014 08:15:39 GMT'),
-                    '$lt': new Date('Wed, 30 Dec 2020 08:15:39 GMT')
+                '$match': {
+                    'timestamp': {
+                        '$gte': new Date('Wed, 01 Jan 2014 08:15:39 GMT'),
+                        '$lt': new Date('Wed, 30 Dec 2020 08:15:39 GMT')
+                    }
+                }
+            }, {
+                '$project': {
+                    'featureName': '$featureName',
+                    'scenarioName': '$scenarioName',
+                    'status': '$status',
+                    'Hours': {
+                        '$hour': '$timestamp'
+                    },
+                    'Day': {
+                        '$dayOfMonth': '$timestamp'
+                    },
+                    'Month': {
+                        '$month': '$timestamp'
+                    },
+                    'year': {
+                        '$year': '$timestamp'
+                    }
+                }
+            }, {
+                '$group': {
+                    '_id': {
+                        'featureName': '$featureName'
+                    },
+                    'scenarios': {
+                        '$addToSet': '$scenarioName'
+                    }
                 }
             }
-        }, {
-            '$project': {
-                'featureName': '$featureName',
-                'scenarioName': '$scenarioName',
-                'status': '$status',
-                'Hours': {
-                    '$hour': '$timestamp'
-                },
-                'Day': {
-                    '$dayOfMonth': '$timestamp'
-                },
-                'Month': {
-                    '$month': '$timestamp'
-                },
-                'year': {
-                    '$year': '$timestamp'
-                }
-            }
-        }, {
-            '$group': {
-                '_id': {
-                    'featureName': '$featureName'
-                },
-                'scenarios': {
-                    '$addToSet': '$scenarioName'
-                }
-            }
-        }
         ]
     ).toArray((err, results) => {
         res.send(results);
     });
 })
 
-app.get('/getData', (req, res)=> {
-    db.collection('dataAutomation').createIndex( { dateDay: "text" } )
-    db.collection('dataAutomation').createIndex( { featureName: "text" } )
+app.get('/getData', (req, res) => {
+    db.collection('dataAutomation').createIndex({ dateDay: "text" })
+    db.collection('dataAutomation').createIndex({ featureName: "text" })
     const dataBR = new Date(req.query.dateDay * 1000);
     let otherDate = new Date();
     dataBR.setHours(otherDate.getHours() - 3);
@@ -189,7 +183,7 @@ app.get('/getData', (req, res)=> {
             '$sort': {
                 '_id.hour': 1
             }
-            },{
+        }, {
             '$group': {
                 '_id': {
                     'scenarioName': '$_id.scenarioName'
